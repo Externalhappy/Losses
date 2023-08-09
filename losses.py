@@ -11,6 +11,7 @@ def cross_entropy(logit, y):
     for i, j in enumerate(y):
         one_hot_targets[i, j] = 1
     loss = - torch.sum(one_hot_targets * log_probs) / batch_size
+    # loss = F.nll_loss(log_probs, y)
     
     return loss
 
@@ -23,6 +24,7 @@ def negative_cross_entropy(logit, output):
     for i, j in enumerate(y):
         one_hot_targets[i, j] = 1
     loss = - torch.sum(one_hot_targets * log_probs) / batch_size
+    # loss = F.nll_loss(log_probs, y)
 
     return loss
 
