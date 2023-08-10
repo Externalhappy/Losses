@@ -7,9 +7,10 @@ def cross_entropy(logit, y):
     batch_size = logit.shape[0]
     softmax_probs = F.softmax(logit, dim=-1)
     log_probs = torch.log(torch.clamp(softmax_probs, min=1e-5, max=1.) )
+    
     one_hot_targets = torch.zeros_like(logit)
-    for i, j in enumerate(y):
-        one_hot_targets[i, j] = 1
+    one_hot_targets.scatter_(1, y.view(-1, 1), 1)
+    
     loss = - torch.sum(one_hot_targets * log_probs) / batch_size
     # loss = F.nll_loss(log_probs, y)
     
@@ -36,8 +37,8 @@ def negative_cross_entropy(logit, output):
     softmax_probs = F.softmax(logit, dim=-1)
     log_probs = torch.log(torch.clamp(1. - softmax_probs, min=1e-5, max=1.) )
     one_hot_targets = torch.zeros_like(logit)
-    for i, j in enumerate(y):
-        one_hot_targets[i, j] = 1
+    one_hot_targets.scatter_(1, y.view(-1, 1), 1)
+    
     loss = - torch.sum(one_hot_targets * log_probs) / batch_size
     # loss = F.nll_loss(log_probs, y)
 
