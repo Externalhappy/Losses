@@ -23,9 +23,8 @@ def weighted_samples_cross_entropy(logit, y, weights):
     softmax_probs = F.softmax(logit, dim=-1)
     log_probs = torch.log(torch.clamp(softmax_probs, min=1e-5, max=1.) )
     one_hot_targets = torch.zeros_like(logit)
-    for i, j in enumerate(y):
-        one_hot_targets[i, j] = 1
-    loss = torch.sum((- weights * torch.sum(one_hot_targets * log_probs, dim=1))) / batch_size
+    one_hot_targets.scatter_(1, y.view(-1, 1), 1)
+
     # loss = (weights * F.cross_entropy(log_probs, y, reduction='none')).mean()
     
     return loss
