@@ -25,7 +25,7 @@ def weighted_samples_cross_entropy(logit, y, weights):
     one_hot_targets = torch.zeros_like(logit)
     one_hot_targets.scatter_(1, y.view(-1, 1), 1)
 
-    # loss = (weights * F.cross_entropy(log_probs, y, reduction='none')).mean()
+    loss = (weights * F.cross_entropy(log_probs, y, reduction='none')).mean()
     
     return loss
 
